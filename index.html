@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مطعم الحوت</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0b2233; --sea:#1f5f7a; --foam:#e6f0ef; --paper:#f4f7f7;
+  --ember:#ff5a1f; --ember-d:#e04a12; --muted:#5d7380; --line:#d9e4e4;
+  --display:'Lalezar','Tajawal',Tahoma,sans-serif;
+  --body:'Tajawal',Tahoma,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.6}
+button,input,select,textarea{font-family:inherit}
+:focus-visible{outline:3px solid var(--ember);outline-offset:2px}
+
+/* ===== الهيدر ===== */
+.top{position:absolute;inset:0 0 auto 0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:16px 20px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;font-family:var(--display);font-size:28px;text-decoration:none}
+.brand svg{width:34px;height:34px;fill:var(--ember)}
+.top a.cta{background:#fff;color:var(--ink);padding:9px 18px;border-radius:99px;font-weight:700;text-decoration:none;font-size:15px}
+
+/* ===== الهيرو ===== */
+.hero{position:relative;height:min(78vh,560px);min-height:420px;overflow:hidden;background:var(--ink);direction:ltr;touch-action:pan-y}
+.hero-track{display:flex;height:100%;transition:transform .6s cubic-bezier(.65,0,.35,1)}
+.hero-slide{flex:0 0 100%;height:100%}
+.hero-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(11,34,51,.92) 0%,rgba(11,34,51,.45) 45%,rgba(11,34,51,.25) 100%);pointer-events:none}
+.hero-text{position:absolute;z-index:20;right:0;left:0;bottom:56px;padding:0 22px;direction:rtl;color:#fff;max-width:760px;margin-inline:auto}
+.hero-text h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(46px,9vw,84px);line-height:1.05}
+.hero-text p{margin:10px 0 22px;font-size:clamp(16px,2.6vw,20px);color:#d6e6e6;max-width:30em}
+.btn{display:inline-block;border:0;border-radius:12px;background:var(--ember);color:#fff;font-weight:700;font-size:17px;padding:13px 26px;cursor:pointer;text-decoration:none;transition:background .2s,transform .1s}
+.btn:hover{background:var(--ember-d)}
+.btn:active{transform:scale(.97)}
+.hero-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:25;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);color:#fff;font-size:28px;line-height:1;cursor:pointer}
+.hero-arrow:hover{background:rgba(255,255,255,.32)}
+.hero-prev{left:14px}.hero-next{right:14px}
+.hero-dots{position:absolute;z-index:25;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.hero-dot{width:26px;height:4px;padding:0;border:0;border-radius:4px;background:rgba(255,255,255,.4);cursor:pointer;transition:.3s}
+.hero-dot.active{background:var(--ember);width:42px}
+
+/* ===== شريط المميزات ===== */
+.strip{display:grid;grid-template-columns:repeat(3,1fr);max-width:900px;margin:-28px auto 0;position:relative;z-index:40;background:#fff;border-radius:16px;box-shadow:0 12px 34px rgba(11,34,51,.14);overflow:hidden}
+.strip div{padding:16px 10px;text-align:center;font-weight:700;font-size:15px}
+.strip div+div{border-inline-start:1px solid var(--line)}
+.strip small{display:block;color:var(--muted);font-weight:400;font-size:13px}
+
+/* ===== المنيو ===== */
+.menu{max-width:980px;margin:0 auto;padding:60px 18px 70px}
+.menu-head{margin-bottom:28px}
+.menu-head h2{margin:0;font-family:var(--display);font-weight:400;font-size:40px}
+.menu-head p{margin:4px 0 0;color:var(--muted)}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:22px}
+.card{display:flex;background:#fff;border-radius:20px;overflow:hidden;border:1px solid var(--line);transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(11,34,51,.12)}
+.card-img{flex:0 0 42%;background:var(--foam)}
+.card-img img{width:100%;height:100%;min-height:210px;object-fit:cover;display:block}
+.card-body{flex:1;padding:18px;display:flex;flex-direction:column}
+.card-body h3{margin:0 0 6px;font-family:var(--display);font-weight:400;font-size:27px}
+.card-body p{margin:0 0 16px;color:var(--muted);font-size:15px}
+.card-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.price{font-size:22px;font-weight:700;color:var(--sea)}
+.price small{font-size:14px;font-weight:500;color:var(--muted)}
+.card .btn{padding:10px 18px;font-size:15px}
+
+footer{background:var(--ink);color:#9db4bd;text-align:center;padding:30px 18px;font-size:14px}
+footer b{display:block;font-family:var(--display);font-weight:400;font-size:24px;color:#fff;margin-bottom:4px}
+
+/* ===== نافذة الطلب ===== */
+.overlay{position:fixed;inset:0;background:rgba(11,34,51,.65);display:none;align-items:center;justify-content:center;padding:14px;z-index:99999}
+.overlay.active{display:flex}
+.modal{position:relative;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;background:#fff;border-radius:22px;padding:26px 20px 24px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.close{position:absolute;top:12px;left:12px;width:38px;height:38px;border:0;border-radius:50%;background:var(--foam);font-size:24px;line-height:1;cursor:pointer}
+.modal h2{margin:0 0 18px;font-family:var(--display);font-weight:400;font-size:30px;text-align:center}
+.picked{background:var(--foam);border-radius:12px;padding:12px 14px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.picked span{color:var(--muted)}
+.modal label{display:block;margin:14px 0 6px;font-weight:700;font-size:15px}
+.modal input,.modal select,.modal textarea{width:100%;border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:13px;font-size:16px;outline:none}
+.modal input:focus,.modal select:focus,.modal textarea:focus{border-color:var(--sea);background:#fff}
+.modal .invalid{border-color:#d33;background:#fff5f5}
+.fixed{border:1.5px solid var(--line);background:var(--foam);border-radius:10px;padding:13px;color:var(--muted)}
+.phone{display:flex;gap:8px;direction:ltr}
+.code{width:68px;display:flex;align-items:center;justify-content:center;background:var(--foam);border-radius:10px;font-weight:700;flex-shrink:0}
+.row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.row2 label{margin-top:14px}
+.qty{display:flex;align-items:center;justify-content:center;gap:12px}
+.qty button{width:44px;height:44px;border:0;border-radius:10px;background:var(--ink);color:#fff;font-size:24px;cursor:pointer}
+.qty input{width:80px;text-align:center}
+.modal textarea{min-height:84px;resize:vertical}
+.total{margin-top:18px;padding:15px;background:var(--ink);color:#fff;border-radius:12px;display:flex;justify-content:space-between;align-items:center}
+.total strong{font-size:22px}
+.send{width:100%;margin-top:14px;padding:15px;font-size:19px}
+.send:disabled{opacity:.6;cursor:wait}
+.note{text-align:center;margin:12px 0 0;font-weight:700;min-height:1.4em}
+
+@media (max-width:560px){
+  .card{flex-direction:column}
+  .card-img{flex-basis:auto}
+  .card-img img{height:220px}
+  .menu{padding-top:48px}
+  .strip{margin-inline:14px}
+  .strip div{font-size:13px;padding:13px 6px}
+  .hero-arrow{display:none}
+}
+.noimg{display:grid;place-items:center;font-size:64px;min-height:210px;height:100%}
+/* شريط الإعلانات (يظهر فقط لو فعّلت الكود في التعليق فوق الهيدر) */
+.ad-bar{background:var(--ember);color:#fff;text-align:center;font-weight:700;font-size:14px;padding:8px 14px}
+.ad-bar a{color:#fff;text-decoration:underline}
+.ad-bar.img{display:block;padding:0;background:none}
+.ad-bar img{display:block;width:100%;max-height:90px;object-fit:cover}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<!-- ============ شريط الإعلانات (اختياري) ============
+     لتفعيله: امسح سطر البداية وسطر النهاية بتوع التعليق، وغيّر النص.
+     لإخفائه: رجّع التعليق.
+
+<a class="ad-bar img" href="رابط-الإعلان">
+  <img src="رابط-الصورة" alt="إعلان">
+  </a>
+
+============================================== -->
+
+<header class="hero" id="hero">
+  <div class="top" style="direction:rtl">
+    <a class="brand" href="#">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 23c0-6 2-9 7-11-3-1-5-3-7-8-2 5-4 7-7 8 5 2 7 5 7 11z"/></svg>
+      الحوت
+    </a>
+    <a class="cta" href="#menu">المنيو</a>
+  </div>
+
+  <div class="hero-track"></div>
+
+  <div class="hero-text">
+    <h1>مطعم الحوت</h1>
+    <p>برجر طازج بيوصلك لحد باب البيت في الجيزة.</p>
+    <a class="btn" href="#menu">اطلب دلوقتي</a>
+  </div>
+
+  <button class="hero-arrow hero-prev" type="button" aria-label="السابق">‹</button>
+  <button class="hero-arrow hero-next" type="button" aria-label="التالي">›</button>
+  <div class="hero-dots"></div>
+</header>
+
+<div class="strip">
+  <div>توصيل<small>كل مناطق الجيزة</small></div>
+  <div>طازج<small>بيتحضّر بعد طلبك</small></div>
+  <div>سريع<small>الطلب في دقيقة</small></div>
+</div>
+
+<main class="menu" id="menu">
+  <div class="menu-head">
+    <h2>المنيو</h2>
+    <p>اختار وجبتك واطلب</p>
+  </div>
+
+  <div class="products" id="products"></div>
+</main>
+
+<footer><b>مطعم الحوت</b>الجيزة، مصر</footer>
+
+<!-- نافذة الطلب -->
+<div class="overlay" id="ov" role="dialog" aria-modal="true" aria-labelledby="ovTitle">
+  <div class="modal">
+    <button type="button" class="close" id="closeBtn" aria-label="إغلاق">×</button>
+    <h2 id="ovTitle">تفاصيل الطلب</h2>
+
+    <div class="picked"><span>المنتج</span><strong id="picked">-</strong></div>
+
+    <label>المحافظة</label>
+    <div class="fixed">الجيزة</div>
+
+    <label for="whaleArea">المنطقة *</label>
+    <select id="whaleArea"><option value="">اختر المنطقة</option></select>
+
+    <label for="whalePhone">رقم الهاتف *</label>
+    <div class="phone">
+      <div class="code">+20</div>
+      <input type="tel" id="whalePhone" placeholder="01XXXXXXXXX" inputmode="numeric" autocomplete="tel-national">
+    </div>
+
+    <label for="whaleStreet">اسم الشارع *</label>
+    <input type="text" id="whaleStreet" placeholder="اكتب اسم الشارع" autocomplete="street-address">
+
+    <div class="row2">
+      <div><label for="whaleBuilding">العمارة *</label><input type="text" id="whaleBuilding" placeholder="56"></div>
+      <div><label for="whaleFloor">الدور *</label><input type="number" id="whaleFloor" placeholder="1" min="0" inputmode="numeric"></div>
+      <div><label for="whaleApartment">الشقة *</label><input type="text" id="whaleApartment" placeholder="3"></div>
+    </div>
+
+    <label for="whaleLandmark">علامة مميزة</label>
+    <input type="text" id="whaleLandmark" placeholder="مثال: بجوار...">
+
+    <label>الكمية</label>
+    <div class="qty">
+      <button type="button" id="minus" aria-label="تقليل الكمية">−</button>
+      <input type="number" id="qty" value="1" min="1" readonly aria-label="الكمية">
+      <button type="button" id="plus" aria-label="زيادة الكمية">+</button>
+    </div>
+
+    <label for="whaleInstructions">تعليمات التوصيل</label>
+    <textarea id="whaleInstructions" placeholder="اكتب أي تعليمات للسائق..."></textarea>
+
+    <div class="total"><span>السعر الإجمالي</span><strong><span id="total">0</span> جنيه</strong></div>
+
+    <button type="button" id="send" class="btn send">اطلب</button>
+    <p class="note" id="note" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   الإعدادات: عدّل في الجزء ده بس
+   ===================================================================== */
+const CFG = {
+  restaurant: "مطعم الحوت",
+  whatsapp: "201063294520",   // رقم واتساب اللي بيستقبل الطلبات (كود الدولة + الرقم، بدون + أو مسافات)
+  currency: "جنيه",
+  governorate: "الجيزة"
+};
+
+/* مناطق التوصيل (غيّر الأسماء براحتك) */
+const AREAS = Array.from({length:15}, (_, i) => "المنطقة " + (i + 1));
+
+/* صور البانر اللي فوق: ضيف رابط صورة جديد في سطر جديد */
+const BANNERS = [
+  "https://i.postimg.cc/R0xhmHK6/delicious-flying-burger-sandwich-stuffed-thumbnail-109513.webp",
+  "https://i.postimg.cc/bvfrPtkS/pngtree-burger-fire-food-hd-background-image-1541161.jpg"
+];
+
+/* =====================================================================
+   الوجبات: لإضافة وجبة جديدة انسخ سطر واحد من تحت والصقه وغيّر بياناته.
+   التصميم بيتعمل لها لوحده.
+     name  = اسم الوجبة
+     desc  = وصف قصير
+     price = السعر (رقم بس)
+     img   = رابط الصورة (لو سيبته فاضي "" هيظهر رمز بدل الصورة)
+   ===================================================================== */
+const PRODUCTS = [
+  { name: "برجر",     desc: "برجر طازج مع الخس والطماطم والصوص",         price: 120, img: "https://i.postimg.cc/R0xhmHK6/delicious-flying-burger-sandwich-stuffed-thumbnail-109513.webp" },
+  { name: "برجر حار", desc: "برجر بصوص حار وطعم مميز لعشاق الحار",       price: 150, img: "https://i.postimg.cc/bvfrPtkS/pngtree-burger-fire-food-hd-background-image-1541161.jpg" },
+  { name: "orca is orca", desc: "برجر بصوص حار وطعم مميز لعشاق الحار",         price: 843, img: "https://i.postimg.cc/bvfrPtkS/pngtree-burger-fire-food-hd-background-image-1541161.jpg" },
+
+];
+
+/* ===== من هنا مفيش حاجة محتاجة تتغير ===== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+$("hero").querySelector(".hero-track").innerHTML = BANNERS.map((u, i) =>
+  `<div class="hero-slide"><img src="${esc(u)}" alt="عرض ${i + 1}"></div>`).join("");
+
+$("products").innerHTML = PRODUCTS.map(p => `
+  <article class="card">
+    <div class="card-img">${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">` : `<div class="noimg">🍔</div>`}</div>
+    <div class="card-body">
+      <h3>${esc(p.name)}</h3>
+      <p>${esc(p.desc)}</p>
+      <div class="card-foot">
+        <span class="price">${Number(p.price).toLocaleString("ar-EG")} <small>${esc(CFG.currency)}</small></span>
+        <button class="btn order-btn" type="button" data-product="${esc(p.name)}" data-price="${Number(p.price)}">اطلب</button>
+      </div>
+    </div>
+  </article>`).join("");
+
+/* ===== الطلب ===== */
+let product = "", price = 0;
+const ov = $("ov"), qty = $("qty"), note = $("note"), send = $("send");
+const fields = ["whaleArea","whalePhone","whaleStreet","whaleBuilding","whaleFloor","whaleApartment","whaleLandmark","whaleInstructions"];
+
+$("whaleArea").insertAdjacentHTML("beforeend", AREAS.map(a => `<option value="${a}">${a}</option>`).join(""));
+
+const setNote = (t, c) => { note.textContent = t; note.style.color = c || ""; };
+const updateTotal = () => { $("total").textContent = (price * Number(qty.value)).toLocaleString("ar-EG"); };
+
+function openOrder(b) {
+  product = b.dataset.product; price = Number(b.dataset.price);
+  $("picked").textContent = product; qty.value = 1; updateTotal(); setNote("");
+  fields.forEach(id => $(id).classList.remove("invalid"));
+  ov.classList.add("active"); document.body.style.overflow = "hidden";
+}
+function closeOrder() { ov.classList.remove("active"); document.body.style.overflow = ""; }
+
+document.querySelectorAll(".order-btn").forEach(b => b.addEventListener("click", () => openOrder(b)));
+$("closeBtn").addEventListener("click", closeOrder);
+ov.addEventListener("click", e => { if (e.target === ov) closeOrder(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeOrder(); });
+$("plus").addEventListener("click", () => { qty.value = Number(qty.value) + 1; updateTotal(); });
+$("minus").addEventListener("click", () => { if (qty.value > 1) { qty.value = Number(qty.value) - 1; updateTotal(); } });
+fields.forEach(id => $(id).addEventListener("input", () => $(id).classList.remove("invalid")));
+
+function normalizePhone(raw) {
+  let p = raw.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/\D/g, "");
+  if (p.startsWith("0020")) p = p.slice(4);
+  else if (p.startsWith("20") && p.length === 12) p = p.slice(2);
+  else if (p.startsWith("0")) p = p.slice(1);
+  return p;
+}
+
+send.addEventListener("click", () => {
+  const v = id => $(id).value.trim();
+  const phone = normalizePhone(v("whalePhone"));
+  const missing = ["whaleArea","whaleStreet","whaleBuilding","whaleFloor","whaleApartment"].filter(id => !v(id));
+  const phoneOk = /^1[0125]\d{8}$/.test(phone);
+  if (!phoneOk) missing.push("whalePhone");
+  missing.forEach(id => $(id).classList.add("invalid"));
+  if (missing.length) {
+    $(missing[0]).focus();
+    setNote(!phoneOk && missing.length === 1 ? "رقم الهاتف غير صحيح (مثال: 01012345678) ❗" : "من فضلك أكمل البيانات المطلوبة ❗", "#d33");
+    return;
+  }
+  const quantity = Number(qty.value), total = price * quantity, cur = CFG.currency;
+  const lines = [
+    `🐳 طلب جديد من ${CFG.restaurant}`, "",
+    `🍔 الوجبة: ${product}`,
+    `🔢 الكمية: ${quantity}`,
+    `💰 سعر الوحدة: ${price} ${cur}`,
+    `💵 الإجمالي: ${total} ${cur}`, "",
+    `📍 ${CFG.governorate} - ${v("whaleArea")}`,
+    `الشارع: ${v("whaleStreet")}`,
+    `عمارة: ${v("whaleBuilding")} | دور: ${v("whaleFloor")} | شقة: ${v("whaleApartment")}`
+  ];
+  if (v("whaleLandmark")) lines.push(`علامة مميزة: ${v("whaleLandmark")}`);
+  lines.push(`📞 رقم العميل: +20${phone}`);
+  if (v("whaleInstructions")) lines.push(`📝 تعليمات: ${v("whaleInstructions")}`);
+
+  const url = `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`;
+  const w = window.open(url, "_blank");
+  if (!w) location.href = url;          // لو المتصفح منع الفتح في تبويب جديد
+  setNote("هيتفتح واتساب، اضغط إرسال لإتمام الطلب ✅", "#16834b");
+  fields.forEach(id => { $(id).value = ""; });
+  setTimeout(closeOrder, 1800);
+});
+
+/* ===== البانر ===== */
+const hero = $("hero"), track = hero.querySelector(".hero-track"), slides = hero.querySelectorAll(".hero-slide"), dotsBox = hero.querySelector(".hero-dots");
+let idx = 0, timer = null, sx = null;
+dotsBox.innerHTML = Array.from(slides, (_, i) => `<button class="hero-dot" type="button" aria-label="صورة ${i+1}"></button>`).join("");
+const dots = dotsBox.querySelectorAll(".hero-dot");
+function show(i) {
+  idx = (i + slides.length) % slides.length;
+  track.style.transform = `translateX(-${idx * 100}%)`;
+  dots.forEach((d, n) => d.classList.toggle("active", n === idx));
+}
+function auto() {
+  clearInterval(timer);
+  if (slides.length > 1 && !matchMedia("(prefers-reduced-motion: reduce)").matches) timer = setInterval(() => show(idx + 1), 5000);
+}
+hero.querySelector(".hero-next").addEventListener("click", () => { show(idx + 1); auto(); });
+hero.querySelector(".hero-prev").addEventListener("click", () => { show(idx - 1); auto(); });
+dots.forEach((d, i) => d.addEventListener("click", () => { show(i); auto(); }));
+hero.addEventListener("touchstart", e => { sx = e.touches[0].clientX; clearInterval(timer); }, {passive:true});
+hero.addEventListener("touchend", e => {
+  if (sx === null) return;
+  const d = e.changedTouches[0].clientX - sx;
+  if (Math.abs(d) > 40) show(idx + (d < 0 ? 1 : -1));
+  sx = null; auto();
+});
+show(0); auto();
+</script>
+</body>
+</html>
+
